@@ -1,6 +1,7 @@
 import 'package:coffee_time/features/order/presentation/widgets/order_section.dart';
 import 'package:coffee_time/shared/custom_button.dart';
 import 'package:flutter/material.dart';
+import '../../../../core/entities/product_entity.dart';
 import '../../../delivery/presentation/view/delivery_view.dart';
 import 'cash_or_wallet_section.dart';
 import 'delivery_address_section.dart';
@@ -9,8 +10,8 @@ import 'discount_section.dart';
 import 'payment_summary_section.dart';
 
 class OrderViewBody extends StatefulWidget {
-  const OrderViewBody({super.key});
-
+  const OrderViewBody({super.key, required this.product});
+  final CoffeeProductEntity product;
   @override
   State<OrderViewBody> createState() => _OrderViewBodyState();
 }
@@ -42,7 +43,7 @@ class _OrderViewBodyState extends State<OrderViewBody> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: OrderSection(),
+            child: OrderSection(product: widget.product),
           ),
           Divider(
             thickness: 4,
@@ -56,7 +57,7 @@ class _OrderViewBodyState extends State<OrderViewBody> {
           SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: PaymentSummarySection(),
+            child: PaymentSummarySection(price: widget.product.price),
           ),
           SizedBox(height: 48),
           Padding(

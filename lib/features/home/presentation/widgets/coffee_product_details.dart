@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import '../../../../core/entities/product_entity.dart';
 import 'coffee_detail_description.dart';
 import 'coffee_price_and_buy_button.dart';
 import 'coffee_size.dart';
 import 'custom_appbar.dart';
 import 'detail_coffee_name_icons.dart';
-import 'home_view_body.dart';
 
 class CoffeeProductDetails extends StatefulWidget {
   const CoffeeProductDetails({super.key, required this.product});
-  final CoffeeProduct product;
+  final CoffeeProductEntity product;
 
   @override
   State<CoffeeProductDetails> createState() => _CoffeeProductDetailsState();
@@ -60,7 +60,7 @@ class _CoffeeProductDetailsState extends State<CoffeeProductDetails> {
               const SizedBox(height: 24),
               const CoffeeSize(),
               const SizedBox(height: 40),
-              CoffePriceAndBuyButton(),
+              CoffePriceAndBuyButton(product: widget.product),
               const SizedBox(height: 24)
             ],
           ),

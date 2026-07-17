@@ -1,3 +1,4 @@
+import 'package:coffee_time/features/auth/presentation/view/login_page.dart';
 import 'package:coffee_time/navigator_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -74,7 +75,7 @@ class OnboardingView extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                            builder: (context) => const NavigatorScreen()),
+                            builder: (context) => const LogInPage()),
                       );
                     },
                   ),

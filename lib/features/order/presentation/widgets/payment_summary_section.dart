@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 class PaymentSummarySection extends StatelessWidget {
   const PaymentSummarySection({
     super.key,
+    required this.price,
   });
+
+  final double price;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class PaymentSummarySection extends StatelessWidget {
             ),
             Spacer(),
             Text(
-              '\$ 4.53',
+              '\$ ${price.toStringAsFixed(2)}',
               textAlign: TextAlign.right,
               style: TextStyle(
                 color: const Color(0xFF242424),

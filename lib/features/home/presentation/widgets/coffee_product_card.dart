@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../../core/entities/product_entity.dart';
 import '../../../../core/utils/app_images.dart';
-import 'home_view_body.dart';
 
 class CoffeeProductCard extends StatelessWidget {
   const CoffeeProductCard({super.key, required this.product});
 
-  final CoffeeProduct product;
+  final CoffeeProductEntity product;
 
   @override
   Widget build(BuildContext context) {

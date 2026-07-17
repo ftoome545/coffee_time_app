@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../../../core/entities/product_entity.dart';
 import '../widgets/order_view_body.dart';
 
 class OrderView extends StatelessWidget {
-  const OrderView({super.key});
+  const OrderView({super.key, required this.product});
+  final CoffeeProductEntity product;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,9 @@ class OrderView extends StatelessWidget {
           },
         ),
       ),
-      body: const OrderViewBody(),
+      body: OrderViewBody(
+        product: product,
+      ),
     );
   }
 }
