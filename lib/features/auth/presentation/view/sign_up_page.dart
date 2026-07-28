@@ -4,6 +4,7 @@ import '../../../../shared/custom_password_field.dart';
 import '../../../../shared/custom_text_form_field.dart';
 import '../widgets/already_member_or_create_account.dart';
 import 'login_page.dart';
+import 'phone_sign_up_page.dart';
 
 class SignUpPage extends StatefulWidget {
   static const String screenRoute = '/signUpPage';
@@ -103,6 +104,19 @@ class _SignUpPageState extends State<SignUpPage> {
                     // Navigator.pushNamed(context, LogInPage.screenRoute);
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const LogInPage(),
+                    ));
+                  },
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                AlreadyMemberOrCreateAccount(
+                  title: 'Sign Up with Phone Number? ',
+                  subTitle: 'Click Here',
+                  onTap: () {
+                    // Navigator.pushNamed(context, LogInPage.screenRoute);
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const PhoneSignUpPage(),
                     ));
                   },
                 ),

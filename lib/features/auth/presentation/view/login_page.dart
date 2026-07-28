@@ -69,6 +69,25 @@ class _LogInPageState extends State<LogInPage> {
                 const SizedBox(
                   height: 12,
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(""),
+                    GestureDetector(
+                      onTap: () {
+                        // Handle forgot password action
+                      },
+                      child: Text(
+                        "Forgot Password?",
+                        style: const TextStyle(
+                            color: Color(0xffC67C4E), fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
                 // Text(
                 //   "Invalid email or password",
                 //   style: const TextStyle(color: Colors.red, fontSize: 16),
