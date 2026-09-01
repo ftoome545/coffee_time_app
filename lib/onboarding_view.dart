@@ -1,8 +1,5 @@
-import 'package:coffee_time/features/auth/presentation/view/login_page.dart';
-import 'package:coffee_time/navigator_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'features/auth/presentation/view/phone_sign_up_page.dart';
+import 'features/auth/presentation/view/phone_sign_up_view.dart';
 import 'shared/custom_button.dart';
 
 class OnboardingView extends StatelessWidget {
@@ -76,7 +73,7 @@ class OnboardingView extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                            builder: (context) => const PhoneSignUpPage()),
+                            builder: (context) => const PhoneSignUpView()),
                       );
                     },
                   ),

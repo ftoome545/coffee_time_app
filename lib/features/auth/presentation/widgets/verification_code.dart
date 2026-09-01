@@ -1,28 +1,22 @@
+import 'package:coffee_time/features/auth/presentation/phone_auth_cubit/phone_auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
 import '../../../../shared/custom_button.dart';
 
 class VerificationCode extends StatefulWidget {
-  const VerificationCode({super.key});
-
+  const VerificationCode({super.key, this.verificationId});
+  final String? verificationId;
   @override
   State<VerificationCode> createState() => _VerificationCodeState();
 }
 
 class _VerificationCodeState extends State<VerificationCode> {
+  String smsCode = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   backgroundColor: const Color(0xffC67C4E),
-      //   title: const Text(
-      //     'Verify Your Phone Number',
-      //     style: TextStyle(color: Colors.white),
-      //   ),
-      //   iconTheme: const IconThemeData(color: Colors.white),
-      //   centerTitle: true,
-      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Center(
@@ -54,10 +48,13 @@ class _VerificationCodeState extends State<VerificationCode> {
                 CustomButton(
                   text: 'Verify & Proceed',
                   onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => const VerificationCode()),
-                    );
+                    context
+                        .read<PhoneAuthCubit>()
+                        .signInWithPhoneNumber(widget.verificationId!, smsCode);
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //       builder: (context) => const VerificationCode()),
+                    // );
                   },
                 ),
               ],
@@ -95,9 +92,9 @@ class _VerificationCodeState extends State<VerificationCode> {
       submittedPinTheme: submittedPinTheme,
       length: 6,
       onChanged: (value) {
-        // setState(() {
-        //   code = value;
-        // });
+        setState(() {
+          smsCode = value;
+        });
       },
       onCompleted: (value) {
         // Handle OTP input completion

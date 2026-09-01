@@ -1,47 +1,94 @@
-import 'package:coffee_time/core/errors/custom_exception.dart';
+import 'dart:async';
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthFirebaseService {
   FirebaseAuth auth = FirebaseAuth.instance;
-
-  Future<void> signInWithPhone(
+  Future<String> verifyUserPhone(
     String phoneNumber,
   ) async {
-    await auth.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        // ANDROID ONLY!
+    final completer = Completer<String>();
 
-        // Sign the user in (or link) with the auto-generated credential
-        await auth.signInWithCredential(credential);
-      },
-      verificationFailed: (FirebaseAuthException e) {
-        if (e.code == 'invalid-phone-number') {
-          throw CustomException(
-              message: 'The provided phone number is not valid.');
-        } else if (e.code == 'too-many-requests') {
-          throw CustomException(
-              message: 'Too many requests. Please try again later.');
-        } else {
-          throw CustomException(
-              message: 'Phone number verification failed. Please try again.');
-        }
-      },
-      codeSent: (String verificationId, int? resendToken) async {
-        // Update the UI - wait for the user to enter the SMS code
-        String smsCode = 'xxxx';
+    try {
+      await auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          log('Automatic phone verification available');
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          log('Firebase error code: ${e.code}');
+          log('Firebase error message: ${e.message}');
+          String message;
 
-        // Create a PhoneAuthCredential with the code
-        PhoneAuthCredential credential = PhoneAuthProvider.credential(
-            verificationId: verificationId, smsCode: smsCode);
+          switch (e.code) {
+            case 'invalid-phone-number':
+              message = 'Please enter a valid phone number.';
+              break;
 
-        // Sign the user in (or link) with the credential
-        await auth.signInWithCredential(credential);
-      },
-      timeout: const Duration(seconds: 60),
-      codeAutoRetrievalTimeout: (String verificationId) {
-        // Auto-resolution timed out...
-      },
-    );
+            case 'too-many-requests':
+              message =
+                  'Too many attempts. Please wait a few minutes and try again.';
+              break;
+
+            case 'operation-not-allowed':
+              message =
+                  'Phone sign-in is currently unavailable. Please try again later.';
+              break;
+
+            case 'quota-exceeded':
+              message = 'SMS limit reached. Please try again later.';
+              break;
+
+            case 'billing-not-enabled':
+              message = 'Phone verification is temporarily unavailable.';
+              break;
+
+            default:
+              message =
+                  "We couldn’t send the verification code. Please try again.";
+          }
+          if (!completer.isCompleted) {
+            completer.completeError(message);
+          }
+        },
+        codeSent: (String verificationId, int? resendToken) async {
+          log('OTP sent');
+
+          if (!completer.isCompleted) {
+            completer.complete(verificationId);
+          }
+        },
+        timeout: const Duration(seconds: 60),
+        codeAutoRetrievalTimeout: (String verificationId) {
+          log('Auto retrieval timeout');
+
+          if (!completer.isCompleted) {
+            completer.complete(verificationId);
+          }
+        },
+      );
+    } catch (e) {
+      if (!completer.isCompleted) {
+        completer.completeError(e);
+      }
+    }
+    return completer.future;
+  }
+
+  Future<UserCredential> signInWithPhoneNumber(
+      String verificationId, String smsCode) async {
+    log('Signing in with phone number');
+
+    final credential = PhoneAuthProvider.credential(
+        verificationId: verificationId, smsCode: smsCode);
+    return await auth.signInWithCredential(credential);
+  }
+
+  Future<void> signOut() async {
+    await auth.signOut();
+  }
+
+  bool isLogged() {
+    return auth.currentUser != null;
   }
 }
