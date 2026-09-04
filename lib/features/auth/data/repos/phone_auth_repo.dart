@@ -3,10 +3,12 @@ import 'package:coffee_time/features/auth/data/model/auth_model.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../core/errors/custom_exception.dart';
 import '../../../../core/services/auth_firebase_service.dart';
+import '../../../../core/services/shared_preferences_service.dart';
 
 class PhoneAuthRepo {
   final AuthFirebaseService service;
-  PhoneAuthRepo({required this.service});
+  final SharedPreferencesService prefs;
+  PhoneAuthRepo({required this.service, required this.prefs});
 
   Future<Either<Failures, String>> verifyPhone(String phoneNumber) async {
     try {
@@ -22,6 +24,7 @@ class PhoneAuthRepo {
     try {
       final userCredential =
           await service.signInWithPhoneNumber(verificationId, smsCode);
+      await prefs.setLoggedIn(true);
       final user = userCredential.user;
 
       if (user == null) {
@@ -38,9 +41,14 @@ class PhoneAuthRepo {
     }
   }
 
+  Future<bool> isLoggedIn() async {
+    return await prefs.isLoggedIn();
+  }
+
   Future<void> signOut() async {
     try {
       await service.signOut();
+      await prefs.logout();
     } catch (e) {
       throw CustomException(message: 'Failed to sign out: $e');
     }

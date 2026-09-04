@@ -12,4 +12,25 @@ class AuthModel {
       uid: user.uid,
     );
   }
+
+  factory AuthModel.fromModel(AuthModel model) {
+    return AuthModel(
+      phoneNumber: model.phoneNumber,
+      uid: model.uid,
+    );
+  }
+
+  factory AuthModel.fromJson(Map<String, dynamic> json) {
+    return AuthModel(
+      phoneNumber: json['phoneNumber'] ?? '',
+      uid: json['uid'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'phoneNumber': phoneNumber,
+      'uid': uid,
+    };
+  }
 }

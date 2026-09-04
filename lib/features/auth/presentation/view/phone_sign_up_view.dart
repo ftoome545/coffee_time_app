@@ -10,12 +10,9 @@ class PhoneSignUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => PhoneAuthCubit(phoneAuthRepo: getIt<PhoneAuthRepo>()),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: PhoneSignUpConsumer(),
-      ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: PhoneSignUpConsumer(),
     );
   }
 }

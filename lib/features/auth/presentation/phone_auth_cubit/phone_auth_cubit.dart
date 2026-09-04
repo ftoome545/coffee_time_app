@@ -34,6 +34,10 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
     );
   }
 
+  Future<bool> checkLoginStatus() async {
+    return await phoneAuthRepo.isLoggedIn();
+  }
+
   Future<void> signOutUser() async {
     try {
       await phoneAuthRepo.signOut();
